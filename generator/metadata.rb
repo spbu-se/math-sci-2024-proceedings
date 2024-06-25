@@ -49,7 +49,12 @@ class Section
     @name = secdic['name']
     @status = secdic['status']
     @confname = confname
-    @heads = secdic['heads'].map { |h| Chairman::new(h, self) }
+    @heads =
+      if secdic.has_key?('heads') and secdic['heads'] then
+        secdic['heads'].map { |h| Chairman::new(h, self) }
+      else
+        []
+      end
     @articles =
       if secdic.has_key?('articles') and secdic['articles'] then
         secdic['articles'].map { |a| Article::new(a, self) }
