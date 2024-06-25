@@ -1,0 +1,488 @@
+\documentclass{math-mech-sci}
+
+%\usepackage{mathtools}
+
+\deftitle{Оценка альтернатив на основе парных
+сравнений в задаче об определении лидера группы 
+}
+
+\defauthor
+{Филатова А.А.}
+{студентка 4-го курса бакалавриата СПбГУ}
+{rii.filatova@gmail.com}
+\defauthor
+{Кривулин Н.К.}
+{д.ф.-м.н. профессор кафедры
+статистического моделирования СПбГУ}
+{nkk@math.spbu.ru}
+
+
+\begin{document}
+
+\maketitle
+
+\begin{abstract}
+Рассматривается многокритериальная задача оценки альтернатив на основе парных сравнений, которая возникает при определении лидера группы. Для ее решения применяются методы анализа иерархий, взвешенных геометрических средних и log-чебышевской аппроксимации. Полученные результаты сравниваются между собой.  
+\end{abstract}
+
+\section{Введение}
+
+Один из ключевых компонентов, который играет определяющую роль в достижении целей программного проекта и является залогом  успешной командной работы -- это правильный выбор лидера. При выборе руководителя следует учитывать несколько факторов, а значит принятие данного решения можно рассматривать как многокритериальную задачу оценки альтернатив на основе парных сравнений по нескольким неравноценным критериям. 
+
+В данной задаче $n$ альтернатив сравниваются попарно по $m$ критериям. 
+Полученные результаты парных сравнений представляют в виде матрицы $\boldsymbol{A}_k$ размерности $n$, в соответствии с критерием  $k=1,\ldots,m$.
+Критерии также сравниваются попарно, и результаты этих сравнений образуют матрицу $\boldsymbol{C}$. Необходимо на основе матриц парных сравнений $\boldsymbol{A}_1, \ldots, \boldsymbol{A}_m$ и $\boldsymbol{C}$ определить степень предпочтения каждой альтернативы. Основная трудность при решении заключается в отсутствии единого решения, оптимального по всем критериям одновременно.
+
+
+Есть целый ряд методов решения данных задач, как эвристических, (например, метод анализа иерархий Т. Саати \cite{Saaty}), так и аналитических (метод взвешенных геометрических средних \cite{Crawford}, метод log-чебышевской
+аппроксимации \cite{Krivulin2024Application}). Учитывая, что результаты, полученные одним методом, могут значительно отличаться от результатов другого метода \cite{Tran}, возникает необходимость в сравнении этих результатов для получения более разумного решения. Если результаты, полученные разными методами, практически совпадают, это свидетельствует о близости решений к оптимальному.
+
+\section{Постановка задачи определения лидера группы }
+
+Рассматривается задача выбора руководителя инженерной команды \cite{Teamleader}, в которой исследуются 4 кандидата (альтернативы) на должность лидера группы $((1), (2), (3), (4))$. Претенденты сравниваются попарно по 4 критериям: личные качества, академические достижения, опыт работы в команде, уровень компетентности разработчика (грейд). 
+
+Результаты парных сравнений
+альтернатив по каждому критерию описываются матрицами:
+$$
+\begin{aligned}
+\boldsymbol{A}_1 & =
+\setlength{\arraycolsep}{3.5pt}
+\footnotesize
+\begin{pmatrix}
+1 & 2 & 3 & 4 \\
+1 / 2 & 1 & 3 & 2 \\
+1 / 3 & 1 / 3 & 1 & 1 / 3 \\
+1 / 4 & 1 / 2 & 3 & 1
+\end{pmatrix}, & \boldsymbol{A}_2 & =
+\setlength{\arraycolsep}{3.5pt}
+\footnotesize
+\begin{pmatrix}
+1 & 2 & 3 & 4 \\
+1 / 2 & 1 & 2 & 3 \\
+1 / 3 & 1 / 2 & 1 & 2 \\
+1 / 4 & 1 / 3 & 1 / 2 & 1
+\end{pmatrix}, \\[1ex]
+\boldsymbol{A}_3 & =
+\setlength{\arraycolsep}{3.5pt}
+\footnotesize
+\begin{pmatrix}
+1 & 2 & 2 & 3 \\
+1 / 2 & 1 & 2 & 3 \\
+1 / 2 & 1 / 2 & 1 & 2 \\
+1 / 3 & 1 / 3 & 1 / 2 & 1
+\end{pmatrix}, & \boldsymbol{A}_4 & =
+\setlength{\arraycolsep}{3.5pt}
+\footnotesize
+\begin{pmatrix}
+1 & 3 & 2 & 3 \\
+1 / 3 & 1 & 2 & 4 \\
+1 / 2 & 1 / 2 & 1 & 1 \\
+1 / 3 & 1 / 4 & 1 & 1
+\end{pmatrix},
+\end{aligned}
+$$
+
+а результаты парных сравнений критериев — матрицей:
+$$
+\boldsymbol{C}=
+\setlength{\arraycolsep}{3.5pt}
+\footnotesize
+\begin{pmatrix}
+1 & 4 & 3 & 7 \\
+1 / 4 & 1 & 1 / 3 & 3 \\
+1 / 3 & 3 & 1 & 5 \\
+1 / 7 & 1 / 3 & 1 / 5 & 1
+\end{pmatrix}.
+$$
+
+Необходимо определить вектор рейтингов альтернатив $\boldsymbol{x}$, который устанавливает порядок на множестве альтернатив. Решение находится тремя методами: методом анализа иерархий, методом взвешенных геометрических
+средних и методом log-чебышевской аппроксимации.
+
+\section{Метод анализа иерархий}
+
+Традиционный способ решения задачи оценки альтернатив на основе их
+парных сравнений --  применение метода анализа иерархий Т.~Саати. 
+Он заключается в составлении взвешенной суммы нормированных главных собственных векторов матриц $\boldsymbol{A}_1, \ldots, \boldsymbol{A}_m$, где в качестве весов выступают элементы нормированного главного собственного вектора матрицы $\boldsymbol{C}$. 
+
+Нормированный главный собственный вектор матрицы $\boldsymbol{C}$ равен
+$$
+\boldsymbol{w}\approx 
+\setlength{\arraycolsep}{3pt}
+\footnotesize
+\begin{pmatrix}
+0{,}5476 & 0{,}1265 & 0{,}2700 & 0{,}0559
+\end{pmatrix}^T.
+$$
+\vspace{0.3ex}
+
+Нормированные главные собственные векторы матриц $ \boldsymbol{A_1}, \boldsymbol{A_2},$ $\boldsymbol{A_3}, \boldsymbol{A_4}$ имеют следующий вид:
+
+\[
+\boldsymbol{x_1}\approx 
+\setlength{\arraycolsep}{3pt}
+\footnotesize
+\begin{pmatrix}
+0{,}4688 & 0{,}2684 & 0{,}0947 & 0{,}1681
+\end{pmatrix}^T,
+\]
+\[
+\boldsymbol{x_2}\approx 
+\setlength{\arraycolsep}{3pt}
+\footnotesize
+\begin{pmatrix}
+0{,}4673 & 0{,}2772 & 0{,}1601 & 0{,}0954
+\end{pmatrix}^T,
+\]
+\[
+\boldsymbol{x_3}\approx 
+\footnotesize
+\setlength{\arraycolsep}{3pt}
+\begin{pmatrix}
+0{,}4155 & 0{,}2926 & 0{,}1850 & 0{,}1069
+\end{pmatrix}^T,
+\]
+\[
+\boldsymbol{x_4}\approx 
+\footnotesize
+\setlength{\arraycolsep}{3pt}
+\begin{pmatrix}
+0{,}4568 & 0{,}2799 & 0{,}1489 & 0{,}1144
+\end{pmatrix}^T.
+\]
+\vspace{-0.2ex}
+
+Тогда вектор рейтингов:
+\vspace{-0.6ex}
+
+$$
+\boldsymbol{x}=w_1 \boldsymbol{x}_1+w_2 \boldsymbol{x}_2+w_3\boldsymbol{x}_3+w_4 \boldsymbol{x}_4\approx 
+\setlength{\arraycolsep}{3pt}
+\footnotesize
+\begin{pmatrix}
+0{,}45355 & 0{,}27669 & 0{,}13038 & 0{,}13938
+\end{pmatrix}^T.
+$$
+\vspace{-0.5ex}
+
+Вектор рейтингов, нормированный относительно максимального элемента, равен
+\vspace{-0.5ex}
+
+\[
+\boldsymbol{x}_{\mathrm{AHP}}\approx 
+\setlength{\arraycolsep}{3pt}
+\footnotesize
+ \begin{pmatrix}
+1 &  0{,}6101 &  0{,}2875 & 0{,}3073
+\end{pmatrix}^T.
+\]
+
+\section{Метод взвешенных геометрических
+средних}
+
+Прямой способ решения многокритериальной задачи оценки альтернатив заключается в аппроксимации матриц парных
+сравнений по всем критериям общей согласованной матрицей. Применение логарифмической шкалы для аппроксимации позволяет получить аналитическое решение задачи непосредственно в явной форме. В случае решения задачи с помощью log-евклидовой аппроксимации полученный вектор $\boldsymbol{x}$ называют решением многокритериальной задачи методом взвешенных геометрических средних.
+
+Для нахождения решения нужно вычислить нормированный относительно суммы элементов вектор геометрических средних $\boldsymbol{w}=(w_{i})$ матрицы $\boldsymbol{C}$ парных сравнений критериев. Далее необходимо определить векторы $\boldsymbol{x}_{i}$ геометрических средних матриц $\boldsymbol{A}_{i}$ парных сравнений альтернатив. Заметим, что геометрическое среднее вычисляется по строкам матриц. 
+
+Элементы каждого вектора $\boldsymbol{x}_i=(x_{j, i})$ возводятся в степень $w_i$, а затем результат перемножения элементов этих векторов, соответствующих индексу $j$, берется в качестве элемента вектора рейтингов $\boldsymbol{x}$.
+\vspace{1ex}
+
+Нормированный вектор геометрических средних матрицы $\boldsymbol{C}$ выражается следующим образом:
+$$
+\boldsymbol{w}\approx
+\setlength{\arraycolsep}{3pt}
+\footnotesize
+\begin{pmatrix}
+0{,}5462 & 0{,}1276 & 0{,}2698 & 0{,}0564
+\end{pmatrix}^T.
+$$
+\newpage
+
+Векторы геометрических средних 
+для матриц $\boldsymbol{A_1}, \boldsymbol{A_2},$ $\boldsymbol{A_3}, \boldsymbol{A_4}$ парных сравнений:
+\vspace{-1.5ex}
+
+\[
+\boldsymbol{x_1}\approx
+\footnotesize
+\setlength{\arraycolsep}{3pt}
+\begin{pmatrix}
+2{,}2134 & 1{,}3161 & 0{,}4387 & 0{,}7825
+\end{pmatrix}^T,
+\]
+\[
+\boldsymbol{x_2}\approx
+\footnotesize
+\setlength{\arraycolsep}{3pt}
+\begin{pmatrix}
+2{,}2134 & 1{,}3161 & 0{,}7598 & 0{,}4518
+\end{pmatrix}^T,
+\]
+\[
+\boldsymbol{x_3}\approx
+\footnotesize
+\setlength{\arraycolsep}{3pt}
+\begin{pmatrix}
+1{,}8612 & 1{,}3161 & 0{,}8409 & 0{,}4855
+\end{pmatrix}^T,
+\]
+\[
+\boldsymbol{x_4}\approx
+\footnotesize
+\setlength{\arraycolsep}{3pt}
+\begin{pmatrix}
+2{,}0598 & 1{,}2779 & 0{,}7071 & 0{,}5373
+\end{pmatrix}^T.
+\]
+\vspace{-0.2ex}
+
+Получим вектор рейтингов:
+\vspace{-0.7ex}
+
+$$
+\boldsymbol{x}=
+\footnotesize
+\begin{pmatrix}
+x_{1,1}^{w_1} \cdot x_{1,2}^{w_2} \cdot x_{1,3}^{w_3} \cdot x_{1,4}^{w_4} \\[0.7ex]
+x_{2,1}^{w_1} \cdot x_{2,2}^{w_2} \cdot x_{2,3}^{w_3} \cdot x_{2,4}^{w_4} \\[0.7ex]
+x_{3,1}^{w_1} \cdot x_{3,2}^{w_2} \cdot x_{3,3}^{w_3} \cdot x_{3,4}^{w_4} \\[0.7ex]
+x_{4,1}^{w_1} \cdot x_{4,2}^{w_2} \cdot x_{4,3}^{w_3} \cdot x_{4,4}^{w_4}
+\end{pmatrix}
+\normalsize
+\approx 
+\setlength{\arraycolsep}{3pt}
+\footnotesize
+\begin{pmatrix}
+2{,}1037 &   1{,}3139 &  0{,}5762 &  0{,}6279
+\end{pmatrix}^T.
+$$
+\vspace{0.2ex}
+
+После нормирования относительно максимального элемента его можно записать как 
+\vspace{-1.5ex}
+
+\[
+\boldsymbol{x}_{\mathrm{WGM}}\approx 
+\footnotesize
+\setlength{\arraycolsep}{3pt}
+\begin{pmatrix}
+1 &   0{,}6245 &   0{,}2739 &  0{,}2985
+\end{pmatrix}^T.
+\]
+
+\section{Метод log-чебышевской аппроксимации}
+
+Еще один метод решения, основанный на аппроксимации матриц парных
+сравнений, -- это метод 
+log-чебышевской аппроксимации с использованием тропической оптимизации. 
+
+\subsection{Элементы тропической математики}
+
+Тропическая (идемпотентная) математика изучает теорию и приложения алгебраических систем с идемпотентными операциями \cite{Krivulin_tropic}. При применении такой операции к одному и тому же аргументу результатом является тот же самый аргумент. 
+
+Решение задачи  парных сравнений будем рассматривать в терминах $\max$--алгебры $\mathbb{R}_{\max }=\left(\mathbb{R}_{+}, \max , \times, 0,1\right)$, где $\mathbb{R}_{+}=\{x \in \mathbb{R} \mid x \geqslant 0\}$, умножение определено как обычно, а сложение является идемпотентной операцией и определено как максимум (обозначается знаком $\oplus$). 
+
+В векторных и матричных операциях используются обычные правила, но с заменой арифметического сложения на операцию максимума.
+
+Cлед матрицы $\boldsymbol{A}=(a_{ij})$ размерности $n\times n$ вычисляется по формуле
+$$
+\small
+\operatorname{tr} \boldsymbol{A}=a_{11} \oplus \cdots \oplus a_{n n} .
+$$
+
+Спектральный радиус $\boldsymbol{A}$ -- скаляр, определяемый формулой
+$$
+\small
+\lambda=\operatorname{tr} \boldsymbol{A} \oplus \cdots \oplus \operatorname{tr}^{1 / n}\left(\boldsymbol{A}^n\right) .
+$$
+
+Если $\lambda \leqslant 1$, то для $\boldsymbol{A}$ можно построить матрицу  Клини
+$$
+\small
+\boldsymbol{A}^*=\boldsymbol{I} \oplus \boldsymbol{A} \oplus \cdots \oplus \boldsymbol{A}^{n-1}. 
+$$
+
+\subsection{Решение задачи}
+
+Найдем решение с помощью процедуры, предложенной в \cite{ Krivulin2019Tropical}.
+\vspace{0.5ex}
+
+Определим спектральный радиус матрицы $\boldsymbol{C}$, который равняется
+\[
+\small
+\lambda=\operatorname{tr} \boldsymbol{C} \oplus \operatorname{tr}^{1 / 2}\left(\boldsymbol{C}^2\right) \oplus \operatorname{tr}^{1 / 3}\left(\boldsymbol{C}^3\right) \oplus \operatorname{tr}^{1 / 4}\left(\boldsymbol{C}^4\right) = 27^{1 / 4}/7^{1/4}.
+\]
+
+Найдем матрицу Клини, определяющую рейтинг весов критериев:
+
+$$
+\small
+\left(\lambda^{-1} \boldsymbol{C}\right)^*=\boldsymbol{I} \ \oplus\  \lambda^{-1}\boldsymbol{C} \ \oplus \ \lambda^{-2}\boldsymbol{C}^2\ \oplus \ \lambda^{-3}\boldsymbol{C}^3 = 
+$$
+\[
+\setlength{\arraycolsep}{3.5pt}
+\footnotesize
+\begin{pmatrix}
+			{1} & 3^{1 / 2} \cdot 7^ {1 / 2} & 3^{1 / 4} \cdot 7^ {1 / 4} & 3^ {3 / 4}\cdot 7^ {3 / 4} \\[0.5ex]
+			3^{-1 / 2} \cdot 7^ {-1 / 2} & {1} & 3^{- 1 / 4} \cdot 7^ {- 1 / 4} & 3^{1 / 4} \cdot 7^ {1 / 4} \\[0.5ex]
+			3^{-1 / 4} \cdot 7^ {- 1 / 4} & 3^{1 / 4} \cdot 7^ {1 / 4} & {1} & 3^{1 / 2} \cdot 7^ {1 / 2} \\[0.5ex]
+			 3^ {- 3 / 4}\cdot 7^ {- 3 / 4} & 3^{- 1 / 4} \cdot 7^ {- 1 / 4} & 3^{- 1 / 2} \cdot 7^ {- 1 / 2} & {1} \\
+		\end{pmatrix}.
+\]
+\vspace{1ex}
+
+Столбцы матрицы Клини коллинеарны --- в качестве вектора весов можно взять любой, например,
+
+$$
+\boldsymbol{w}=
+\setlength{\arraycolsep}{3.5pt}
+\footnotesize
+\begin{pmatrix}
+1 & 3^ {- 1 / 2}\cdot 7^ {- 1 / 2} & 3^ {- 1 / 4}\cdot 7^ {- 1 / 4} & 3^ {- 3 / 4}\cdot 7^ {- 3 / 4}
+\end{pmatrix}^T.
+$$
+\vspace{0.2ex}
+
+Для нахождения рейтингов альтернатив составим взвешенную тропическую сумму матриц $\boldsymbol{A}_1$, $\boldsymbol{A}_2$, $\boldsymbol{A}_3$ и  $\boldsymbol{A}_4$  в виде
+
+\[
+\boldsymbol{B}\small =w_1 \boldsymbol{A}_1 \oplus w_2 \boldsymbol{A}_2\oplus w_3 \boldsymbol{A}_3 \oplus w_4\boldsymbol{A}_4= 	
+\setlength{\arraycolsep}{3.5pt}
+\footnotesize
+\begin{pmatrix}
+			{1}{} & {{2}}{} & {{3}}{} & {{4}}{} \\
+			{1} / {{2}} & {1}{} & {{3}}{} & {{2}}{} \\
+			{1} / {{3}} & {1} / {{3}} & {1}{} & {{2}} \cdot   {{3^ {-1 / 4}}} \cdot {{7^ {-1 / 4}}}  \\
+			{1} / {{4}} & {1} / {{2}} & {{3}}{} & {1}{} \\
+		\end{pmatrix}.
+\]
+\newpage
+
+Спектральный радиус матрицы $\boldsymbol{B}$  равен 
+\vspace{-0.8ex}
+
+$$
+\small
+\mu=\operatorname{tr} \boldsymbol{B} \oplus \operatorname{tr}^{1 / 2}\left(\boldsymbol{B}^2\right) \oplus \operatorname{tr}^{1 / 3}\left(\boldsymbol{B}^3\right)\oplus \operatorname{tr}^{1 / 4}\left(\boldsymbol{B}^4\right)={{2^ {1 / 2}} \cdot {3^ {3 / 8}}} \cdot  {{7^ {-1 / 8}}}.
+$$
+\vspace{-0.2ex}
+
+Найдем матрицу Клини:
+
+$$
+\begin{aligned}
+\small
+\boldsymbol{B^*}=\left(\mu^{-1} \boldsymbol{B}\right)^*= \boldsymbol{I} \oplus \mu^{-1} B \oplus \mu^{-2} B^2\oplus \mu^{-3} B^3=
+\end{aligned}
+$$
+\[
+\setlength{\arraycolsep}{3.5pt}
+\footnotesize
+\begin{pmatrix}
+			{1}{} & {{2^ {1 / 2}} \cdot {7^ {1 / 8}}} \cdot  {{3^ {-3 / 8}}} & {{2} \cdot {3^ {1 / 4}} \cdot {7^ {1 / 4}}} & {{8^ {1 / 2}} \cdot {7^ {1 / 8}}} \cdot {{3^ {-3 / 8}}} \\[0.5ex]
+			{{7^ {3 / 8}}} \cdot {{2^ {- 1 / 2}} \cdot {3^ {-9 / 8}}} & {1}{} & {{3^ {1 / 4}}\cdot {7^ {1 / 4}}}{} & {{2^ {1 / 2}} \cdot {7^ {1 / 8}}} \cdot  {{3^ {-3 / 8}}} \\[0.5ex]
+			{{7^ {1 / 8}}} \cdot  {{2^ {-1 / 2}} \cdot {3^ {-11 / 8}}} & {{7^ {1 / 4}}} \cdot  {{3^ {- 7 / 4}}} & {1}{} & {{2^ {1 / 2}}} \cdot  {{3^{-5/8} \cdot 7^ {-1 / 8}}} \\[0.5ex]
+			{{7^ {1 / 4}}} \cdot  {{2^{-1}} \cdot {3^ {-3 / 4}}} & {{7^ {3 / 8}}} \cdot {{2^ {-1 / 2}} \cdot {3^ {-9 / 8}}} & {{3^{5/8} \cdot 7^ {1 / 8}}} \cdot {{2^ {-1 / 2}}} & {1}{} \\
+\end{pmatrix}.
+\]
+\vspace{0.7ex}
+
+Не все столбцы $\boldsymbol{B^*}$ коллинеарны, следовательно,  необходимо вычислить наилучший  и наихудший дифференцирующие векторы. Наилучшим считается столбец данной матрицы, для которого отношение максимального и минимального элементов является наибольшим. Соответственно наихудший -- тот столбец, где это отношение наименьшее.
+\vspace{0.5ex}
+
+Вычислим их с помощью формул, приведенных в статье \cite{Krivulin2024Application}.
+\vspace{0.5ex}
+
+ Для определения наилучшего дифференцирующего вектора найдем среди нормированных столбцов $\boldsymbol{B^*} = (\boldsymbol{b}_j^*)$ следующие:
+ $$
+\boldsymbol{x_k}=\boldsymbol{b}_k^*\left\|\boldsymbol{b}_k^*\right\|^{-1}, \quad k=\arg \max _{1 \leq j \leq n}\left\|\boldsymbol{b}_j^*\right\|\left\|\left(\boldsymbol{b}_j^*\right)^{-}\right\|.
+ $$
+
+Последовательно вычислим:
+\vspace{-0.5ex}
+
+$$
+\small
+\left\|\boldsymbol{b}_1^*\right\|\left\|\left(\boldsymbol{b}_1^*\right)^{-}\right\|= \left\|\boldsymbol{b}_2^*\right\|\left\|\left(\boldsymbol{b}_2^*\right)^{-}\right\|= 7^ {-1 / 8}\cdot 2^ {1 / 2}\cdot 3^ {11 / 8},
+$$
+
+$$
+\small
+\left\|\boldsymbol{b}_3^*\right\|\left\|\left(\boldsymbol{b}_3^*\right)^{-}\right\|= \left\|\boldsymbol{b}_4^*\right\|\left\|\left(\boldsymbol{b}_4^*\right)^{-}\right\|= 2\cdot 3^ {1 / 4}\cdot 7^ {1 / 4}.
+$$
+\vspace{-0.5ex}
+
+Максимальное значение соответствует $k=1$ и $k=2$, получим, что 
+\vspace{-0.5ex}
+
+\[
+\boldsymbol{x_1}\approx
+\setlength{\arraycolsep}{3pt}
+\footnotesize
+\begin{pmatrix}
+1 & 0{,} 4262 & 0{,} 1991 & 0{,} 3568
+\end{pmatrix}^T,
+\quad 
+\normalsize
+\boldsymbol{x_2}\approx
+\setlength{\arraycolsep}{3pt}
+\footnotesize
+\begin{pmatrix}
+1 & 0{,} 8371 & 0{,} 1991 & 0{,} 3568
+\end{pmatrix}^T.
+\]
+\vspace{-0.7ex}
+
+Наилучшим дифференцирующим вектором будет вектор с наименьшими координатами. В данном случае им является $\boldsymbol{x}_1=\boldsymbol{x}^{\prime}_{\mathrm{LCA}}$, так как он лучше различает первую и вторую альтернативы.
+\vspace{0.7ex}
+
+Наихудший вектор вычисляется с помощью следующей формулы и определяется однозначно:
+$$
+\small
+\boldsymbol{x}^{\prime\prime}_{\mathrm{LCA}}=(\mathbf{1}^T\left(\mu^{-1} \boldsymbol{B}\right)^*)^-
+\approx
+\footnotesize
+\setlength{\arraycolsep}{3pt}
+\begin{pmatrix}
+1 & 0{,} 8370 & 0{,} 2336 & 0{,} 4185
+\end{pmatrix}^T.
+$$
+
+
+\section{Заключение}
+
+В результате решения задачи об определении лидера группы на основе парных сравнений альтернатив $(1), \ (2),\ (3), \ (4)$ по 4 критериям было получено 4 решения: $\boldsymbol{x}_{\mathrm{AHD}}$ методом анализа иерархий, $\boldsymbol{x}_{\mathrm{WGD}}$ методом взвешенных геометрических средних, наилучший $\boldsymbol{x}^{\prime}_{\mathrm{LCA}}$ и наихудший $\boldsymbol{x}^{\prime\prime}_{\mathrm{LCA}}$ дифференцирующие векторы методом log-чебышевской аппроксимации. Решения задают одинаковый порядок альтернатив:
+$$
+(1) \succ(2) \succ(4) \succ(3) \text {. }
+$$
+
+Таким образом, найденный вектор можно считать оптимальным.
+
+\begin{thebibliography}{8}
+
+\bibitem{Saaty} Саати Т. Принятие решений. Метод анализа иерархий //   Пер. с англ. Вачнадзе Р. Г. М.: Радио и связь, 1993. 315 с.
+
+\bibitem{Crawford}  Crawford G., Williams C. A note on the analysis of subjective judgment
+matrices // J. Math. Psych. 1985. Vol. 29, N 4. P. 387–405.
+
+\bibitem{Krivulin2024Application} Krivulin N. Application of tropical optimization for solving multicriteria problems of pairwise comparisons using log-Chebyshev approximation~// Int. J. Approx. Reason. 2024. Vol. 169, P. 109168. 
+
+\bibitem{Tran} Tran N. M. Pairwise ranking: Choice of method can produce arbitrarily
+different rank order // Linear Algebra Appl. 2013. Vol. 438, N 3. P.~1012–1024.
+
+\bibitem{Teamleader} Muhisn Z. A. A., Omar M., Ahmad M., Muhisn S. A. Team leader selection by using an
+Analytic Hierarchy Process (AHP) technique // J. Softw. 2015. Vol. 10, N 10.
+P. 1216–1227. 
+
+\bibitem{Krivulin_tropic} Кривулин Н. К. Методы идемпотентной алгебры в задачах моделирования и анализа сложных систем // СПб.: Изд-во С.-Петерб. ун-та, 2009. 255 с.
+
+\bibitem{Krivulin2019Tropical}
+Krivulin N., Sergeev S. Tropical implementation of the Analytical
+Hierarchy Process decision method // Fuzzy Sets and Systems. 2019.
+Vol. 377. P. 31-51. 
+
+
+
+\end{thebibliography}
+
+\end{document}
