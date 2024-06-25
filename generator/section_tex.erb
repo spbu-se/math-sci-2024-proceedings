@@ -65,7 +65,7 @@
 
 {\Large \textbf{\textsf{<%= @name %>}}}
 
-<% chairman_texs.each_with_index do |ct, i| %> <% if i > 0 then %>\vspace{5mm}<% end %> <%= ct %> <% end %>
+<% if custom_half_title %><%= custom_half_title %><% else %><% chairman_texs.each_with_index do |ct, i| %> <% if i > 0 then %>\vspace{5mm}<% end %> <%= ct %> <% end %><% end %>
 \end{center}
 \newpage
 

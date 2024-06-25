@@ -38,7 +38,7 @@ class Article
 end
 
 class Section
-  attr_reader :fullfolder, :foldername, :pdfname, :name, :status, :heads, :articles, :confname
+  attr_reader :fullfolder, :foldername, :pdfname, :name, :status, :heads, :articles, :confname, :custom_half_title
   attr_accessor :start_page
 
   def initialize(fullfolder, confname)
@@ -55,6 +55,12 @@ class Section
         secdic['articles'].map { |a| Article::new(a, self) }
       else
         []
+      end
+    @custom_half_title =
+      if secdic.has_key?('custom_half_title') and secdic['custom_half_title'] then
+        secdic['custom_half_title']
+      else
+        nil
       end
   end
 end
