@@ -33,7 +33,7 @@ def gen_whole(sections)
     end
 
     f.puts <<~TOC
-      pdftk _a_begin.pdf #{sections.map {|s| s.pdfname}.join(' ')} _toc.pdf _z_end.pdf cat output math-sci.pdf
+      pdftk _a_begin.pdf #{sections.map {|s| s.pdfname}.join(' ')} _toc.pdf _z_end.pdf cat output proceedings.pdf
       TOC
   end
 
