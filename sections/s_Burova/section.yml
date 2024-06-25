@@ -1,0 +1,19 @@
+name: Распараллеливание в OpenMP и сплайновые аппроксимации
+heads:
+- name: Бурова Ирина Герасимовна
+  title: д.ф.-м.н., профессор, профессор Кафедры вычислительной математики
+  photo: Burova.jpg
+status: true
+articles:
+- title: Stochastic properties of a random Young diagram
+  file: yang.pdf
+  meta_pages_count: 2
+  by:
+  - Yang Yu.
+  - Yakubovich Y.
+- title: Архитектура динамической децентрализованной большой языковой модели c использование технологии консенсусов
+  file: статья_конференции_Мат_мех__Наука__2024_05_23.pdf
+  meta_pages_count: 8
+  by:
+  - Козгунов Н.
+  - Халаши М.
