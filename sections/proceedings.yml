@@ -1,6 +1,8 @@
 title: '{\scalebox{0.95}[1.0]{\addfontfeature{LetterSpace=-3.0}Материалы весенней научно-практической конференции «Мат-мех. Наука 2024»}}'
 sections:
-  - s_Abramov
+- s_Abramov
+- s_Golyandina
+- s_Kustova
 #  - s02
 #  - s04
 #  - s06
