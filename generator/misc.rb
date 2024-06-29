@@ -60,7 +60,10 @@ class PDFtkPDFTool < PDFTool
   end
 
   def overlay_pdf_with_pages_cmd bottom, top, top_range, target
-    'echo "Do not know yet how to take a part of overlay with pdftk..."'
+    sep = $/
+    "pdftk \"#{top}\" cat #{top_range.min}-#{top_range.max} output _section_tmp.pdf" +
+    sep +
+    self.overlay_pdfs_cmd(bottom, '_section_tmp.pdf', target)
   end
 
 end
@@ -91,13 +94,44 @@ class QpdfPDFTool < PDFTool
 
 end
 
+# Uses the tool that suits better,
+# usually qpdf which is several times faster
+class CombinedPDFTool < PDFTool
+
+  def initialize
+    @qpdf_tool = QpdfPDFTool.new
+    @pdftk_tool = PDFtkPDFTool.new
+  end
+
+  def get_page_count file_name
+    @qpdf_tool.get_page_count file_name
+  end
+
+  # The only thing pdftk does better is concatenating, as
+  # qpdf loses TOC.
+  # https://github.com/qpdf/qpdf/issues/94#issuecomment-1877573490
+  def join_pdfs_cmd sources, target
+    @pdftk_tool.join_pdfs_cmd sources, target
+  end
+
+  def overlay_pdfs_cmd bottom, top, target
+    @qpdf_tool.overlay_pdfs_cmd bottom, top, target
+  end
+
+  def overlay_pdf_with_pages_cmd bottom, top, top_range, target
+    @qpdf_tool.overlay_pdf_with_pages_cmd bottom, top, top_range, target
+  end
+
+end
+
 def pdf_tool
   case OPTIONS[:pdftool]
-  when 'qpdf'
-    QpdfPDFTool.new
+  when 'combined'
+    CombinedPDFTool.new
   when 'pdftk'
     PDFtkPDFTool.new
-  else
+  when 'qpdf'
+    QpdfPDFTool.new  else
     raise 'No idea what pdf tool to use'
   end
 end
