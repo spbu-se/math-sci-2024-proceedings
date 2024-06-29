@@ -18,13 +18,74 @@ def is_os_windows?
   end
 end
 
-def get_page_count file_name
-  output = `pdftk #{file_name} dump_data`
-  /NumberOfPages:\s+(?<npages>\d+)/ =~ output
-  if npages
-    npages.to_i
+class PDFTool
+
+  def get_page_count file_name
+    raise NotImplementedError.new("Either qpdf or pdftk, not this abstract one!")
+  end
+
+  def join_pdfs_cmd sources, target
+    raise NotImplementedError.new("Either qpdf or pdftk, not this abstract one!")
+  end
+
+  def overlay_pdfs_cmd top, bottom, target
+    raise NotImplementedError.new("Either qpdf or pdftk, not this abstract one!")
+  end
+
+end
+
+class PDFtkPDFTool < PDFTool
+
+  def get_page_count file_name
+    output = `pdftk "#{file_name}" dump_data`
+    /NumberOfPages:\s+(?<npages>\d+)/ =~ output
+    if npages
+      npages.to_i
+    else
+      raise "No number of pages in #{file_name}"
+      nil
+    end
+  end
+
+  def join_pdfs_cmd sources, target
+    "pdftk #{sources.map{|f| "\"#{f}\""}.join ' '} cat output \"#{target}\""
+  end
+
+  def overlay_pdfs_cmd top, bottom, target
+    "pdftk \"#{top}\" multibackground \"#{bottom}\" output \"#{target}\""
+  end
+
+end
+
+class QpdfPDFTool < PDFTool
+
+  def get_page_count file_name
+    npages = `qpdf --show-npages "#{file_name}"`
+    if npages
+      npages.to_i
+    else
+      raise "No number of pages in #{file_name}"
+      nil
+    end
+  end
+
+  def join_pdfs_cmd sources, target
+    "qpdf --empty --pages #{sources.map{|f| "\"#{f}\" 1-z"}.join ' '} -- \"#{target}\""
+  end
+
+  def overlay_pdfs_cmd top, bottom, target
+    "qpdf \"#{top}\" --underlay \"#{bottom}\" -- \"#{target}\""
+  end
+
+end
+
+def pdf_tool
+  case OPTIONS[:pdftool]
+  when 'qpdf'
+    QpdfPDFTool.new
+  when 'pdftk'
+    PDFtkPDFTool.new
   else
-    raise "No number of pages in #{file_name}"
-    nil
+    raise 'No idea what pdf tool to use'
   end
 end

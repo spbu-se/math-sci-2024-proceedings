@@ -18,7 +18,7 @@ class Article
   attr_accessor :start_page
 
   def getpagescount
-    get_page_count @fullfile
+    pdf_tool.get_page_count @fullfile
   end
 
   def by()
@@ -78,7 +78,7 @@ class Proceedings
     procmeta = YAML::load_file(File::join(sectionsfolder, 'proceedings.yml'))
     @sectionsfolder = sectionsfolder
     @title = procmeta['title']
-    start_page_count = get_page_count(File::join(sectionsfolder, '_a_begin.pdf'))
+    start_page_count = pdf_tool.get_page_count(File::join(sectionsfolder, '_a_begin.pdf'))
     @content_start_page = start_page_count + ( start_page_count.odd? ? 2 : 1 )
     @sections = procmeta['sections'].map do |f|
       Section::new(File::expand_path(File::join(sectionsfolder, f)), @title)

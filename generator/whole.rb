@@ -32,9 +32,11 @@ def gen_whole(sections)
       f.puts "#!/bin/bash\n"
     end
 
-    f.puts <<~TOC
-      pdftk _a_begin.pdf #{sections.map {|s| s.pdfname}.join(' ')} _toc.pdf _z_end.pdf cat output proceedings.pdf
-      TOC
+    f.puts pdf_tool.join_pdfs_cmd(
+      ['_a_begin.pdf'].concat(sections.map {|s| s.pdfname}).concat(['_toc.pdf', '_z_end.pdf']),
+      'proceedings.pdf'
+    )
+    
   end
 
   if not win then

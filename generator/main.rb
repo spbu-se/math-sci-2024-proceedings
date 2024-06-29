@@ -17,6 +17,9 @@ OptionParser.new do |opts|
   opts.on("-t", "--tex-launcher [STRING]", "XeLaTeX CLI launcher, tectonic or xelatex") do |v|
     OPTIONS[:texlauncher] = v
   end
+  opts.on("-p", "--pdf-tool [STRING]", "PDF tool to use, either qpdf or pdftk") do |v|
+    OPTIONS[:pdftool] = v
+  end
 end.parse!
 
 if !OPTIONS.key?(:sections) then
@@ -33,6 +36,21 @@ if !OPTIONS.key?(:texlauncher) then
       OPTIONS[:texlauncher] = 'xelatex'
     else
       STDERR.puts "XeLaTeX launcher not specified, failed to detect either tectonic or xelatex"
+      exit -1
+    end
+  end
+end
+
+if !OPTIONS.key?(:pdftool) then
+  `which qpdf`
+  if $?.success?
+    OPTIONS[:pdftool] = 'qpdf'
+  else
+    `which pdftk`
+    if $?.success?
+      OPTIONS[:pdftool] = 'pdftk'
+    else
+      STDERR.puts "pdftool not specified, failed to detect either qpdf or pdftk"
       exit -1
     end
   end
