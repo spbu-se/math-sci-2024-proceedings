@@ -49,16 +49,29 @@ class Section
         @articles.map { |a| File::basename(a.fullfile) } +
         if add_empty then ['../../generator/a5-empty.pdf'] else [] end
 
-      f.write <<~COMPILE
+      f.puts <<~COMPILE
         #{hashbang}
         #{OPTIONS[:texlauncher]} _section-overlay.tex
         #{OPTIONS[:texlauncher] == 'tectonic' ? '# ' : ''}#{OPTIONS[:texlauncher]} _section-overlay.tex
 
         #{pdf_tool.join_pdfs_cmd pdfs, '_section-articles.pdf'}
-        #{pdf_tool.overlay_pdfs_cmd '_section-overlay.pdf', '_section-articles.pdf', @pdfname}
+        #{pdf_tool.overlay_pdfs_cmd '_section-articles.pdf', '_section-overlay.pdf', @pdfname}
 
         #{win ? 'move' : 'mv'} #{@pdfname} ..
         COMPILE
+
+      # generate separate article files
+      cur_art_start_page = 3
+      @articles.each do |a|
+        next_art_start_page = cur_art_start_page + a.pagescount
+        f.puts pdf_tool.overlay_pdf_with_pages_cmd(
+          File::basename(a.fullfile),
+          '_section-overlay.pdf',
+          (cur_art_start_page...next_art_start_page), # yes, not including
+          "../_sep_arts/#{'%03d' % a.start_page}-#{'%03d' % (a.start_page + a.pagescount - 1)}.pdf"
+        )
+        cur_art_start_page = next_art_start_page
+      end
     end
 
     if not win

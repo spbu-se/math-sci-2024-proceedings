@@ -28,7 +28,11 @@ class PDFTool
     raise NotImplementedError.new("Either qpdf or pdftk, not this abstract one!")
   end
 
-  def overlay_pdfs_cmd top, bottom, target
+  def overlay_pdfs_cmd bottom, top, target
+    raise NotImplementedError.new("Either qpdf or pdftk, not this abstract one!")
+  end
+
+  def overlay_pdf_with_pages_cmd bottom, top, top_range, target
     raise NotImplementedError.new("Either qpdf or pdftk, not this abstract one!")
   end
 
@@ -51,8 +55,12 @@ class PDFtkPDFTool < PDFTool
     "pdftk #{sources.map{|f| "\"#{f}\""}.join ' '} cat output \"#{target}\""
   end
 
-  def overlay_pdfs_cmd top, bottom, target
+  def overlay_pdfs_cmd bottom, top, target
     "pdftk \"#{top}\" multibackground \"#{bottom}\" output \"#{target}\""
+  end
+
+  def overlay_pdf_with_pages_cmd bottom, top, top_range, target
+    'echo "Do not know yet how to take a part of overlay with pdftk..."'
   end
 
 end
@@ -73,8 +81,12 @@ class QpdfPDFTool < PDFTool
     "qpdf --empty --pages #{sources.map{|f| "\"#{f}\" 1-z"}.join ' '} -- \"#{target}\""
   end
 
-  def overlay_pdfs_cmd top, bottom, target
+  def overlay_pdfs_cmd bottom, top, target
     "qpdf \"#{top}\" --underlay \"#{bottom}\" -- \"#{target}\""
+  end
+
+  def overlay_pdf_with_pages_cmd bottom, top, top_range, target
+    "qpdf \"#{bottom}\" --overlay \"#{top}\" --from=#{top_range.min}-#{top_range.max} -- \"#{target}\""
   end
 
 end
