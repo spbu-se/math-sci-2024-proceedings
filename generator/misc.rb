@@ -18,6 +18,38 @@ def is_os_windows?
   end
 end
 
+RU_TRANSLIT = {
+  'а' => 'a', 'б' => 'b', 'в' => 'v', 'г' => 'g', 'д' => 'd',
+  'е' => 'e', 'ё' => 'e', 'ж' => 'j', 'з' => 'z', 'и' => 'i',
+  'к' => 'k', 'л' => 'l', 'м' => 'm', 'н' => 'n', 'о' => 'o',
+  'п' => 'p', 'р' => 'r', 'с' => 's', 'т' => 't', 'у' => 'u',
+  'ф' => 'f', 'х' => 'h', 'ц' => 'c', 'ч' => 'ch', 'ш' => 'sh',
+  'щ' => 'shch', 'ы' => 'y', 'э' => 'e', 'ю' => 'u', 'я' => 'ya',
+  'й' => 'i', 'ъ' => '', 'ь' => ''
+}
+
+# Транслит, почти как в
+# https://stackoverflow.com/a/60813973/539470
+def transliterate cyrillic_string
+  translit = ""
+  cyrillic_string.downcase.each_char do |char|
+    translit += RU_TRANSLIT[char] ? RU_TRANSLIT[char] : '_'
+  end
+
+  translit.gsub(/[^a-z0-9_]+/, '_'). # не алфавитно-цифровые в подчёркивание
+    gsub(/^[-_]*|[-_]*$/, '') # ну и почистим
+end
+
+# Заменяет "Фамилия И.О." и "Фамилия И. О." на "Фамилия"
+def surname_n_p2surname surname_n_p
+  surname_n_p[... surname_n_p.index(/\s/)]
+end
+
+# Заменяет "Фамилия И.О." и "Фамилия И. О." на "Фамилия, И. О.", как в BibTeX
+def surname_n_p2bibtex surname_n_p
+  surname_n_p.gsub('.', '. ').sub(' ', ', ').gsub(/\s+/, ' ').rstrip
+end
+
 class PDFTool
 
   def get_page_count file_name

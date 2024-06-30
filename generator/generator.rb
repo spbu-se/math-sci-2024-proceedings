@@ -80,3 +80,15 @@ class Section
     cur_page
   end
 end
+
+def gen_bib procs
+  File::open(File::join(File::dirname(procs.sections[0].fullfolder), "proceedings.bib"), "w:UTF-8") do |f|
+    bib_templ = ERB::new procs.bibentry_erb
+    procs.sections.each do |s|
+      s.articles.each do |a|
+        f.puts bib_templ.result a.get_binding
+        f.puts
+      end
+    end
+  end
+end

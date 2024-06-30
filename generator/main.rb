@@ -72,3 +72,5 @@ end
 gen_toc(proceedings.sections, "Содержание", proceedings.title, cpage)
 
 gen_whole(proceedings.sections)
+
+gen_bib(proceedings)

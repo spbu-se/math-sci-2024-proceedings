@@ -2,6 +2,8 @@
 
 require 'yaml'
 
+require_relative './misc.rb'
+
 class Chairman
   attr_reader :name, :photo, :title
 
@@ -14,7 +16,7 @@ class Chairman
 end
 
 class Article
-  attr_reader :section, :title, :by, :file, :fullfile, :articles, :pagescount
+  attr_reader :section, :title, :by, :file, :fullfile, :pagescount, :lang
   attr_accessor :start_page
 
   def getpagescount
@@ -31,9 +33,24 @@ class Article
     @title = ardic['title']
     @author_list = ardic['by']
     @file = ardic['file']
+    @lang = ardic['lang'] ? ardic['lang'] : 'russian'
     @fullfile = File::join(sec.fullfolder, @file)
     @pagescount = self.getpagescount
     @start_page = nil
+  end
+
+  # --- ERB functions ---
+
+  def get_binding
+    binding
+  end
+
+  def get_translit_surname_0
+    transliterate surname_n_p2surname(@author_list[0])
+  end
+
+  def get_bibtex_authors
+    @author_list.map { | a | surname_n_p2bibtex a } .join(' and ')
   end
 end
 
@@ -71,13 +88,14 @@ class Section
 end
 
 class Proceedings
-  attr_reader :title, :sections, :content_start_page
+  attr_reader :title, :sections, :content_start_page, :bibentry_erb
 
   def initialize
     sectionsfolder = OPTIONS[:sections]
     procmeta = YAML::load_file(File::join(sectionsfolder, 'proceedings.yml'))
     @sectionsfolder = sectionsfolder
     @title = procmeta['title']
+    @bibentry_erb = procmeta['bibentry_erb']
     start_page_count = pdf_tool.get_page_count(File::join(sectionsfolder, '_a_begin.pdf'))
     @content_start_page = start_page_count + ( start_page_count.odd? ? 2 : 1 )
     @sections = procmeta['sections'].map do |f|

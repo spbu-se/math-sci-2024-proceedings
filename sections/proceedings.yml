@@ -1,4 +1,18 @@
 title: '{\scalebox{1.0}[1.0]{\addfontfeature{LetterSpace=-0.0}Материалы весенней научно-практической конференции «Мат-мех. Наука 2024»}}'
+bibentry_erb: |
+  @inproceedings{mathsci:2024:<%= get_translit_surname_0 %>:<%= @start_page %>,
+    title        = {<%= @title %>},
+    author       = {<%= get_bibtex_authors %>},
+    year         = {2024},
+    booktitle    = {Материалы весенней научно-практической конференции по вопросам информатики, математики, механики и астрономии «Мат-мех. Наука 2024»},
+    publisher    = {Издательство ВВМ},
+    address      = {Санкт-Петербург},
+    pages        = {<%= @start_page %>--<%= @start_page + @pagescount - 1 %>},
+    organization = {СПбГУ},
+    language     = {<%= @lang %>},
+    hyphenation  = {<%= @lang %>}
+  }
+
 sections:
 - s_Abramov
 - s_Golyandina
