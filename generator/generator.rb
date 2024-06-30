@@ -68,7 +68,7 @@ class Section
           File::basename(a.fullfile),
           '_section-overlay.pdf',
           (cur_art_start_page...next_art_start_page), # yes, not including
-          "../_sep_arts/#{'%03d' % a.start_page}-#{'%03d' % (a.start_page + a.pagescount - 1)}.pdf"
+          "../_sep_arts/#{'%03d' % a.start_page}-#{'%03d' % (a.start_page + a.pagescount - 1)}_#{a.get_translit_surname_0}.pdf"
         )
         cur_art_start_page = next_art_start_page
       end

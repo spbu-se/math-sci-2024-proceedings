@@ -36,7 +36,7 @@ def gen_whole(sections)
       ['_a_begin.pdf'].concat(sections.map {|s| s.pdfname}).concat(['_toc.pdf', '_z_end.pdf']),
       'proceedings.pdf'
     )
-    
+
   end
 
   if not win then
