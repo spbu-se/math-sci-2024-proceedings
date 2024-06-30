@@ -6,7 +6,7 @@ bibentry_erb: |
     year         = {2024},
     booktitle    = {Материалы весенней научно-практической конференции по вопросам информатики, математики, механики и астрономии «Мат-мех. Наука 2024»},
     publisher    = {Издательство ВВМ},
-    address      = {Санкт-Петербург},
+    address      = {СПб.},
     pages        = {<%= @start_page %>--<%= @start_page + @pagescount - 1 %>},
     organization = {СПбГУ},
     language     = {<%= @lang %>},
