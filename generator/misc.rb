@@ -33,7 +33,7 @@ RU_TRANSLIT = {
 def transliterate cyrillic_string
   translit = ""
   cyrillic_string.downcase.each_char do |char|
-    translit += RU_TRANSLIT[char] ? RU_TRANSLIT[char] : '_'
+    translit += RU_TRANSLIT[char] ? RU_TRANSLIT[char] : ( (char.match?(/[a-z]/)) ? char : '_' )
   end
 
   translit.gsub(/[^a-z0-9_]+/, '_'). # не алфавитно-цифровые в подчёркивание
