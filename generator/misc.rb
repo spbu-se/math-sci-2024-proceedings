@@ -147,7 +147,7 @@ class CombinedPDFTool < PDFTool
   end
 
   def overlay_pdfs_cmd bottom, top, target
-    @qpdf_tool.overlay_pdfs_cmd bottom, top, target
+    @pdftk_tool.overlay_pdfs_cmd bottom, top, target
   end
 
   def overlay_pdf_with_pages_cmd bottom, top, top_range, target
