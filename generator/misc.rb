@@ -88,7 +88,7 @@ class PDFtkPDFTool < PDFTool
   end
 
   def overlay_pdfs_cmd bottom, top, target
-    "pdftk \"#{top}\" multibackground \"#{bottom}\" output \"#{target}\""
+    "pdftk \"#{bottom}\" multistamp \"#{top}\" output \"#{target}\""
   end
 
   def overlay_pdf_with_pages_cmd bottom, top, top_range, target
