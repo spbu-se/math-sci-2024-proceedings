@@ -18,6 +18,10 @@ def is_os_windows?
   end
 end
 
+def wherewhich
+  is_os_windows? ? 'where' : 'which'
+end
+
 RU_TRANSLIT = {
   'а' => 'a', 'б' => 'b', 'в' => 'v', 'г' => 'g', 'д' => 'd',
   'е' => 'e', 'ё' => 'e', 'ж' => 'j', 'з' => 'z', 'и' => 'i',

@@ -27,11 +27,11 @@ if !OPTIONS.key?(:sections) then
 end
 
 if !OPTIONS.key?(:texlauncher) then
-  `which tectonic`
+  `#{wherewhich} tectonic`
   if $?.success?
     OPTIONS[:texlauncher] = 'tectonic'
   else
-    `which xelatex`
+    `#{wherewhich} xelatex`
     if $?.success?
       OPTIONS[:texlauncher] = 'xelatex'
     else
@@ -42,9 +42,9 @@ if !OPTIONS.key?(:texlauncher) then
 end
 
 if !OPTIONS.key?(:pdftool) then
-  `which pdftk`
+  `#{wherewhich} pdftk`
   pdftk_exists = $?.success?
-  `which qpdf`
+  `#{wherewhich} qpdf`
   qpdf_exists = $?.success?
   if pdftk_exists && qpdf_exists
     OPTIONS[:pdftool] = 'combined'
