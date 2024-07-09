@@ -69,8 +69,9 @@ proceedings.sections.each do |s|
   cpage = s.maketex(cpage)
 end
 
-gen_toc(proceedings.sections, "Содержание", proceedings.title, cpage)
+gen_toc proceedings.sections, "Содержание", proceedings.title, cpage
 
-gen_whole(proceedings.sections)
+gen_whole proceedings.sections
 
-gen_bib(proceedings)
+gen_bib proceedings
+gen_pubcsv proceedings

@@ -3,5 +3,7 @@ _section*.*
 _toc.*
 _*.sh
 _*.bat
+
 proceedings.pdf
 proceedings.bib
+proceedings.csv
