@@ -55,7 +55,7 @@ class Section
         #{OPTIONS[:texlauncher] == 'tectonic' ? '# ' : ''}#{OPTIONS[:texlauncher]} _section-overlay.tex
 
         #{pdf_tool.join_pdfs_cmd pdfs, '_section-articles.pdf'}
-        #{pdf_tool.overlay_pdfs_cmd '_section-articles.pdf', '_section-overlay.pdf', @pdfname}
+        #{pdf_tool.overlay_pdfs_cmd '_section-overlay.pdf', '_section-articles.pdf', @pdfname}
 
         #{win ? 'move' : 'mv'} #{@pdfname} ..
         COMPILE
